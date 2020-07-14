@@ -23,7 +23,7 @@ else
 	TTY_ARGS=""
 fi
 
-exec /usr/bin/docker run $TTY_ARGS --rm \
+exec docker run $TTY_ARGS --rm \
 	--user "$(id -u):$(id -g)" \
 	--env "GIT_AUTHOR_NAME=$(git config user.name)" \
 	--env "GIT_AUTHOR_EMAIL=$(git config user.email)" \
