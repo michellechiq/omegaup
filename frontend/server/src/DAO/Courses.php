@@ -136,7 +136,13 @@ class Courses extends \OmegaUp\DAO\Base\Courses {
                     i.username,
                     i.name,
                     pr.alias as assignment_alias,
-                    pr.assignment_score
+                    pr.best_score_of_problem as problem_score,
+                    p.alias as problem_alias
+
+
+                    /**
+
+                    */
                 FROM
                     `Groups_` AS g
                 INNER JOIN Groups_Identities gi
@@ -147,7 +153,8 @@ class Courses extends \OmegaUp\DAO\Base\Courses {
                     SELECT
                         bpr.alias,
                         bpr.identity_id,
-                        SUM(best_score_of_problem) as assignment_score
+                        best_score_of_problem
+
                     FROM (
                         SELECT
                             a.alias,
@@ -160,6 +167,8 @@ class Courses extends \OmegaUp\DAO\Base\Courses {
                             ON a.problemset_id = ps.problemset_id
                         INNER JOIN Problemset_Problems psp
                             ON psp.problemset_id = ps.problemset_id
+                        INNER JOIN Problems p
+                          ON p.problem_id=psp.problem_id
                         INNER JOIN Submissions s
                             ON s.problem_id = psp.problem_id
                             AND s.problemset_id = a.problemset_id
@@ -193,6 +202,11 @@ class Courses extends \OmegaUp\DAO\Base\Courses {
                 !is_null($row['assignment_alias'])
             ) {
                 $progress[$username]['progress'][$row['assignment_alias']] = $row['assignment_score'];
+
+                              /** TO DOenter code to do sum of problem_scores to replace assignment_score */
+                $progress[$username]['progress'][$row['assignment_alias']][$row['problem_alias']]= $row['problem_score'];
+
+
             }
         }
         usort(
